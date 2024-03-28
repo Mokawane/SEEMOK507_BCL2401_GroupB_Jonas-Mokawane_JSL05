@@ -11,24 +11,71 @@ const songs = [
     { title: "Come and Get Your Love", artist: "Redbone", genre: "Rock" },
     { title: "I'm Not in Love", artist: "10cc", genre: "Pop" },
     { title: "Fooled Around and Fell in Love", artist: "Elvin Bishop", genre: "Rock" },
-    // Feel free to add even more songs
+    { title: "I Will Always Love You", artist: "Whitney Houston", genre: "R&B" },
+    { title: "Shibobo", artist: "Mandoza", genre: "kwaito" },
+    { title: "Yizo Yizo", artist: "Ishmael", genre: "kwaito" },
+    { title: "Sgubhu", artist: "TKZee", genre: "kwaito" },
+    { title: "Thathi Sgubu", artist: "BOP", genre: "kwaito" },
 ];
 
 
 // Object containing each Guardian's preferred genre
 const guardians = {
     "Star-Lord": "Rock",
-    "Gamora": "Pop",
-    // Add preferences for Drax, Rocket, and Groot
+    "Gamora": "kwaito",
+    "Drax" : "R&B",
+    "Rocket" : "Rock",
+    "Groot" : "Pop"
 };
 
 // Function to generate playlist based on preferred genre
 function generatePlaylist(guardians, songs) {
-    // Use the map() function to create playlists for each Guardian
-    // Your code here
+const playlists = {};
+Object.keys(guardians).forEach(guardian => {
+    const preferredGenre = guardians[guardian];
+    const playlist = songs.filter(song => song.genre ===  preferredGenre);
+
+    playlists[guardian] = playlist.map(song => song.title);
+});
+
+return playlists;
 }
 
 // Call generatePlaylist and display the playlists for each Guardian
-generatePlaylist(guardians, songs);
+const playlists = generatePlaylist(guardians, songs);
+
+const playlistDiv = document.getElementById('playlists');
+Object.keys(playlists).forEach((guardian) => {
+    const playlistContainer = document.createElement("div");
+    playlistContainer.classList.add("playlist");
+
+    const playlistTitle = document.createElement("h2");
+    playlistTitle.textContent = `${guardian}'s playlist:`;
+    playlistContainer.appendChild(playlistTitle);
+
+    const playlistList = document.createElement("div");
+    playlists[guardian].forEach((song) => {
+        const listItem = document.createElement("li");
+        const songTitle = document.createElement("span");
+        songTitle.textContent = song;
+        songTitle.style.textDecoration = "underline";
+        songTitle.style.color = "yellow";
+        songTitle.style.fontWeight = "bold";
+        listItem.appendChild(songTitle);
+        listItem.classList.add("song");
+        listItem.style.listStyleType = 'none';
+
+        
+        const songArtist = document.createElement("span");
+        const artistName = songs.find((s) => s.title === song).artist;
+        songArtist.textContent = " by " + artistName;
+
+        listItem.appendChild(songArtist);
+
+        playlistList.appendChild(listItem);
+    });
+    playlistContainer.appendChild(playlistList);
+    playlistDiv.appendChild(playlistContainer);
+});
 
 
