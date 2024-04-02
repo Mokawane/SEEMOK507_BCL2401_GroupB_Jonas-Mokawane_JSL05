@@ -30,20 +30,29 @@ const guardians = {
 
 // Function to generate playlist based on preferred genre
 function generatePlaylist(guardians, songs) {
+// Initialize an empty object named playlists, to store playlist for each Guardian
 const playlists = {};
+
+// Iterate over each Guardian
 Object.keys(guardians).forEach(guardian => {
+    // Get the preferred genre for the current Guardian
     const preferredGenre = guardians[guardian];
+
+    // Filter songs based on the preferred genre
     const playlist = songs.filter(song => song.genre ===  preferredGenre);
 
-    playlists[guardian] = playlist.map(song => song.title);
+    /*Store the playlist for the current Guardian
+    Only storing song titles in the playlist*/
+    playlists[guardian] = playlist.map(song => song.title); 
 });
-
+// Return the playlists object
 return playlists;
 }
 
-// Call generatePlaylist and display the playlists for each Guardian
+//Call generatePlaylist and display the playlists for each Guardian and
 const playlists = generatePlaylist(guardians, songs);
 
+// Display the playlists for each Guardian
 const playlistDiv = document.getElementById('playlists');
 Object.keys(playlists).forEach((guardian) => {
     const playlistContainer = document.createElement("div");
@@ -65,13 +74,14 @@ Object.keys(playlists).forEach((guardian) => {
         listItem.classList.add("song");
         listItem.style.listStyleType = 'none';
 
-        
+        // Adding artist name
         const songArtist = document.createElement("span");
         const artistName = songs.find((s) => s.title === song).artist;
         songArtist.textContent = " by " + artistName;
-
+        // Appending artist name to the list item
         listItem.appendChild(songArtist);
 
+        // Appending list item to the playlist list
         playlistList.appendChild(listItem);
     });
     playlistContainer.appendChild(playlistList);
